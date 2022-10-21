@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: 'Products API'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8080/'
+    description: 'Product API Dev'
+paths:
+  /v1/createProduct:
+    post:
+      tags:
+        - products
+      summary: 'Create product'
+      description: 'generate a new product'
+      operationId: createProduct
+      requestBody:
+        description: 'Create product object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  '/v1/deleteProduct/{Id}':
+    delete:
+      tags:
+        - products
+      summary: 'Delete product'
+      description: 'delete the product with the entered id'
+      operationId: deleteProduct
+      parameters:
+        -
+          name: Id
+          in: path
+          description: 'The Id product that needs to be deleted'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: 'Invalid Id product supplied'
+        '404':
+          description: 'Product not found'
+  '/v1/products/{Id}':
+    get:
+      tags:
+        - products
+      summary: 'Find product by ID'
+      description: 'Returns a single product'
+      operationId: getProductById
+      parameters:
+        -
+          name: Id
+          in: path
+          description: 'ID of product to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: 'Invalid ID supplier'
+        '404':
+          description: 'Product not found'
+  '/v1/products/{slug}':
+    get:
+      tags:
+        - products
+      summary: 'Find product by slug'
+      description: 'Returns a single product'
+      operationId: getProductBySlug
+      parameters:
+        -
+          name: slug
+          in: path
+          description: 'slug of product to return'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: 'Invalid slug supplier'
+        '404':
+          description: 'Product not found'
+  /v1/products/search:
+    post:
+      tags:
+        - products
+      summary: 'Search product'
+      description: 'search for a product'
+      operationId: SearchProduct
+      requestBody:
+        description: 'Create product object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  '/v1/updateProduct/{Id}':
+    put:
+      tags:
+        - products
+      summary: 'Updated product'
+      description: 'update a product by id'
+      operationId: updateProduct
+      parameters:
+        -
+          name: Id
+          in: path
+          description: 'Id product that to be updated'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 'Updated product object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '400':
+          description: 'Invalid Id product supplied'
+        '404':
+          description: 'Product not found'
+  /v1/products:
+    get:
+      tags:
+        - products
+      summary: 'all products'
+      description: 'Return all products'
+      operationId: getProducts
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: 'Invalid ID supplier'
+        '404':
+          description: 'Product not found'
+components:
+  schemas:
+    Product:
+      title: 'Product model'
+      description: 'Product model'
+      required:
+        - name
+        - slug
+        - description
+        - price
+        - stock
+        - keywords
+      properties:
+        name:
+          type: string
+          example: aspirina
+        slug:
+          type: string
+          example: aspirinaespecial
+        description:
+          type: string
+          example: 'para la fiebre'
+        price:
+          type: number
+          format: double
+          example: '200.5'
+        stock:
+          type: integer
+          example: '4'
+        keywords:
+          type: string
+          example: analgesico
+      type: object
